@@ -1,6 +1,0 @@
-# created by virtualenv automatically
-node_modules
-migrations
-env/
-package-lock.json
-package.json
