@@ -4,14 +4,48 @@
 {% for area in areas %}
 <h3>{{ area.city }}, {{ area.state }}</h3>
 	<ul class="items">
-		<li>
-			<a href="/venues/{{ area.id }}">
+		
+		<li style="display: flex;">
+			<a href="/venues/{{ area.id }}" >
 				<i class="fas fa-music"></i>
 				<div class="item">
 					<h5>{{ area.name }}</h5>
 				</div>
 			</a>
+			<button style="margin-left: 20px; height: 35px; "  id="delete_venue" type="button" class="btn  btn-danger delete_venue" data-id="{{area.id}}">Delete</button>
 		</li>
+		
 	</ul>
+
+	<script>
+		const btn = document.querySelectorAll('.delete_venue')
+	
+		for(let i =0; i < btn.length; i++)
+		{
+			const del = btn[i];
+			del.onclick = function(e)
+			{
+				//e.preventDefault();
+				const del = e.target.dataset['id']
+				fetch('/venues/'+del+'/delete', {
+					method : 'DELETE',
+				}).then((response)=>{
+					console.log(response);
+					const status = response["status"];
+					if (status === 200){
+						//redirect user
+						location.reload(true);
+						//window.location.replace("/venues");
+					}else{
+						alert("Error deleting venues");
+					}
+					
+				})
+	
+			}
+	
+		}
+
+	</script>
 {% endfor %}
 {% endblock %}

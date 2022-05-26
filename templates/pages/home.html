@@ -22,4 +22,25 @@
 		<img id="front-splash" src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cGFydHl8ZW58MHx8MHx8&auto=format&fit=crop&w=500" alt="Front Party floor" class="home-image" style="border-radius: 10px; cursor: pointer;"/>
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-6">
+		<h3 style="color: rgb(20, 144, 144);">Recently Listed Venue</h3>
+		<ul>
+			{% for venue in  data %}
+			<li><b>{{venue.name}}</b>  </li>
+			
+			{% endfor %}
+		</ul>
+
+	</div>
+	<div class="col-sm-6">
+		<h3 style="color: rgb(20, 144, 144);" >Recently Listed Artists</h3>
+		<ul>
+			{% for artist in  artists %}
+			<li> <b>{{artist.name}}</b> </li>
+
+			{% endfor %}
+		</ul>
+	</div>
+</div>
 {% endblock %}

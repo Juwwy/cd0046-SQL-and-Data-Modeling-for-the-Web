@@ -3,7 +3,7 @@
 {% block content %}
 <ul class="items">
 	{% for artist in artists %}
-	<li style="display: flex; align-items: center;">
+	<li style="display: flex;">
 		<a href="/artists/{{ artist.id }}">
 			<i class="fas fa-users"></i>
 			<div class="item" >
@@ -11,14 +11,15 @@
 				
 			</div>
 		</a>
-		<button style=" align-items: center; margin-left: 200px;" id="delete_artist" type="button" class="btn  btn-danger delete_artist" data-id="{{artist.id}}">Delete</button>
-		<!-- <form action="/artists/{{artist.id}}/delete" method="DELETE" id="delForm">
-			
-		</form> -->
+		
+		<button  id="delete_artist" style="height:35px; margin-left: 20px ; text-align: center; " type="button" class="btn  btn-danger delete_artist" data-id="{{artist.id}}">Delete</button>
 		
 	</li>
 	{% endfor %}
 </ul>
+
+
+
 <script>
 	const btn = document.querySelectorAll('.delete_artist')
 
@@ -27,12 +28,21 @@
 		const del = btn[i];
 		del.onclick = function(e)
 		{
-			e.preventDefault();
+			//e.preventDefault();
 			const del = e.target.dataset['id']
 			fetch('/artists/'+del+'/delete', {
 				method : 'DELETE',
 			}).then((response)=>{
-				console.log(response)
+				console.log(response);
+				const status = response["status"];
+				if (status === 200){
+					//redirect user
+					location.reload(true);
+					//window.location.replace("/venues");
+				}else{
+					alert("Error deleting artist");
+				}
+				
 			})
 
 		}
