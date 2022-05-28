@@ -24,23 +24,51 @@
 </div>
 <div class="row">
 	<div class="col-sm-6">
-		<h3 style="color: rgb(20, 144, 144);">Recently Listed Venue</h3>
+		<!-- <h3 style="color: rgb(20, 144, 144);">Recently Listed Venue</h3>
 		<ul>
 			{% for venue in  data %}
 			<li><b>{{venue.name}}</b>  </li>
 			
 			{% endfor %}
+		</ul> -->
+
+		{% with lists = data %}
+        {% if lists %}
+		<h3 style="color: rgb(20, 144, 144);">Recently Listed Venue</h3>
+		<ul>
+			{% for item in lists %}
+				<li><b>{{item.name}}</b>  </li>
+			{% endfor %}
 		</ul>
+          
+         
+        {% endif %}
+        
+      {% endwith %}
 
 	</div>
 	<div class="col-sm-6">
-		<h3 style="color: rgb(20, 144, 144);" >Recently Listed Artists</h3>
+		<!-- <h3 style="color: rgb(20, 144, 144);" >Recently Listed Artists</h3>
 		<ul>
 			{% for artist in  artists %}
 			<li> <b>{{artist.name}}</b> </li>
 
 			{% endfor %}
+		</ul> -->
+
+		{% with lists = artists %}
+        {% if lists %}
+		<h3 style="color: rgb(20, 144, 144);">Recently Listed Artists</h3>
+		<ul>
+			{% for item in lists %}
+				<li><b>{{item.name}}</b>  </li>
+			{% endfor %}
 		</ul>
+          
+         
+        {% endif %}
+        
+      {% endwith %}
 	</div>
 </div>
 {% endblock %}
