@@ -229,6 +229,66 @@ def delete_venue(venue_id):
   return render_template('pages/home.html')
 
 
+@app.route('/venues/<int:venue_id>/edit', methods=['GET'])
+def edit_venue(venue_id):
+  
+  result = Venue.query.filter(Venue.id == venue_id).first()
+  form = VenueForm(obj=result)
+ 
+  # TODO: populate form with values from venue with ID <venue_id>
+  return render_template('forms/edit_venue.html', form=form, venue=result)
+
+@app.route('/venues/<int:venue_id>/edit', methods=['POST'])
+def edit_venue_submission(venue_id):
+  # TODO: take values from the form submitted, and update existing
+  error=False
+
+  venue = VenueForm(request.form) 
+  v1 = venue.name.data
+  v2 = venue.city.data
+  v3 = venue.state.data
+  v4 = venue.phone.data
+  v5 = venue.address.data
+  v6 = venue.genres.data
+  v7 = venue.facebook_link.data
+  v8 = venue.image_link.data
+  v9 = venue.website_link.data
+  v10 = venue.seeking_talent.data
+  v11 = venue.seeking_description.data
+  
+  try:
+    db.session.query(Venue).filter(Venue.id == venue_id).update({
+      'name': v1,
+      'city' : v2,
+      'state' : v3,
+      'phone' : v4,
+      'address' : v5,
+      'genres' : v6,
+      'facebook_link' : v7,
+      'image_link' : v8,
+      'website_link' : v9,
+      'seeking_talent' : v10,
+      'seeking_description' : v11
+      })
+    db.session.commit()
+  except:
+    error=True
+    db.session.rollback()
+  finally:
+    db.session.close()
+
+
+  if not error:
+    flash("Venue updated successfully!")
+  else:
+    flash("Failed to update Venue fields")
+  
+ 
+  return redirect(url_for('show_venue', venue_id=venue_id))
+
+
+
+
 
 #  Artists
 #  ----------------------------------------------------------------
@@ -320,63 +380,6 @@ def edit_artist_submission(artist_id):
     flash("Failed to update Artist fields")
 
   return redirect(url_for('show_artist', artist_id=artist_id))
-
-@app.route('/venues/<int:venue_id>/edit', methods=['GET'])
-def edit_venue(venue_id):
-  
-  result = Venue.query.filter(Venue.id == venue_id).first()
-  form = VenueForm(obj=result)
- 
-  # TODO: populate form with values from venue with ID <venue_id>
-  return render_template('forms/edit_venue.html', form=form, venue=result)
-
-@app.route('/venues/<int:venue_id>/edit', methods=['POST'])
-def edit_venue_submission(venue_id):
-  # TODO: take values from the form submitted, and update existing
-  error=False
-
-  venue = VenueForm(request.form) 
-  v1 = venue.name.data
-  v2 = venue.city.data
-  v3 = venue.state.data
-  v4 = venue.phone.data
-  v5 = venue.address.data
-  v6 = venue.genres.data
-  v7 = venue.facebook_link.data
-  v8 = venue.image_link.data
-  v9 = venue.website_link.data
-  v10 = venue.seeking_talent.data
-  v11 = venue.seeking_description.data
-  
-  try:
-    db.session.query(Venue).filter(Venue.id == venue_id).update({
-      'name': v1,
-      'city' : v2,
-      'state' : v3,
-      'phone' : v4,
-      'address' : v5,
-      'genres' : v6,
-      'facebook_link' : v7,
-      'image_link' : v8,
-      'website_link' : v9,
-      'seeking_talent' : v10,
-      'seeking_description' : v11
-      })
-    db.session.commit()
-  except:
-    error=True
-    db.session.rollback()
-  finally:
-    db.session.close()
-
-
-  if not error:
-    flash("Venue updated successfully!")
-  else:
-    flash("Failed to update Venue fields")
-  
- 
-  return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
 #  ----------------------------------------------------------------
