@@ -1,0 +1,61 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Artists{% endblock %}
+{% block content %}
+<ul class="items">
+	{% for artist in artists %}
+	<li style="display: flex;">
+		<a href="/artists/{{ artist.id }}">
+			<i class="fas fa-users"></i>
+			<div class="item" >
+				<h5>{{ artist.name }}</h5>
+				
+			</div>
+		</a>
+		
+		<button  id="delete_artist" style="height:35px; margin-left: 20px ; text-align: center; " type="button" class="btn  btn-danger delete_artist" data-id="{{artist.id}}">Delete</button>
+		
+	</li>
+	{% endfor %}
+</ul>
+
+
+
+<script>
+	const btn = document.querySelectorAll('.delete_artist')
+
+	for(let i =0; i < btn.length; i++)
+	{
+		const del = btn[i];
+		del.onclick = function(e)
+		{
+			//e.preventDefault();
+			const del = e.target.dataset['id']
+			fetch('/artists/'+del+'/delete', {
+				method : 'DELETE',
+			}).then((response)=>{
+				console.log(response);
+				const status = response["status"];
+				if (status === 200){
+					//redirect user
+					location.reload(true);
+					//window.location.replace("/venues");
+				}else{
+					alert("Error deleting artist");
+				}
+				
+			})
+
+		}
+
+	}
+// document.getElementById('delete_artist').onclick = function(e){
+// 	e.preventDefault();
+// 	const del = e.target.dataset['id']
+// 	fetch('/artists/'+del+'/delete', {
+// 		method : 'DELETE',
+// 	}).then((response)=>{
+// 		console.log(response)
+// 	})
+//}
+</script>
+{% endblock %}

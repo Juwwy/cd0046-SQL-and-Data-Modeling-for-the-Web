@@ -1,7 +1,28 @@
 from datetime import datetime
+import re
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
-from wtforms.validators import DataRequired, AnyOf, URL
+from wtforms.validators import DataRequired, AnyOf, URL, ValidationError, Regexp
+from enum import Enum
+
+
+
+
+def validate_phone(self, phone):
+        us_phone_num = '^([0-9]{3})[-][0-9]{3}[-][0-9]{4}$'
+        match = re.search(us_phone_num, phone.data) 
+        
+        if not match:
+          raise ValidationError('Error, phone number must be in format xxx-xxx-xxxx') 
+
+def choices(self, Enum):
+    choices=[]
+    for choice in choices:
+        tuple_dataRec = (Enum.data)
+        choices.append(tuple_dataRec)
+    
+    if len(choices) < 1:
+        raise ValidationError('Genre is have not be selected!')
 
 class ShowForm(Form):
     artist_id = StringField(
@@ -15,6 +36,7 @@ class ShowForm(Form):
         validators=[DataRequired()],
         default= datetime.today()
     )
+
 
 class VenueForm(Form):
     name = StringField(
@@ -83,14 +105,14 @@ class VenueForm(Form):
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone', validators=[ DataRequired()]
     )
     image_link = StringField(
         'image_link'
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
-        'genres', validators=[DataRequired()],
+        'genres', validators=[DataRequired(), choices],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
@@ -125,6 +147,16 @@ class VenueForm(Form):
     seeking_description = StringField(
         'seeking_description'
     )
+
+#venueCheck = VenueForm()
+
+
+    
+
+    
+
+
+
 
 
 
@@ -199,7 +231,7 @@ class ArtistForm(Form):
         'image_link'
     )
     genres = SelectMultipleField(
-        'genres', validators=[DataRequired()],
+        'genres', validators=[DataRequired(), choices],
         choices=[
             ('Alternative', 'Alternative'),
             ('Blues', 'Blues'),
